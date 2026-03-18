@@ -75,7 +75,17 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-dark px-3" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);">
 
-        <span class="navbar-brand mb-0 h5">Mini Trello</span>
+        <div class="d-flex align-items-center">
+            @if (Request::is('workspaces/*'))
+                <!-- Nút quay lại -->
+                <a href="/" class="btn btn-light btn-sm me-2">
+                    ← Quay lại
+                </a>
+            @else
+                <!-- Mặc định -->
+                <span class="navbar-brand mb-0 h5">Mini Trello</span>
+            @endif
+        </div>
 
         <div class="d-flex align-items-center gap-3">
 
@@ -108,7 +118,7 @@
             <div class="dropdown">
                 <button class="btn btn-light" data-bs-toggle="dropdown">
                     <i class="bi bi-list"></i>
-                </button>>
+                </button>
 
                 <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
@@ -137,6 +147,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- dropdown menu -->
     <script>
         const btn = document.getElementById('menuBtn');
         const menu = document.getElementById('dropdownMenu');

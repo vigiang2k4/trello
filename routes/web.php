@@ -1,11 +1,8 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('dashboard');
-});
 
 // Các route cho Account
 Route::controller(AccountController::class)->group(function () {
@@ -27,4 +24,14 @@ Route::controller(AccountController::class)->group(function () {
 
     // Đăng xuất
     Route::post('logout', 'logout')->name('logout');
+});
+
+Route::controller(WorkspaceController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('workspaces/create', 'create')->name('workspaces.create');
+    Route::post('workspaces', 'store')->name('workspaces.store');
+    Route::get('workspaces/{workspace}', 'show')->name('workspaces.show');
+    Route::get('workspaces/{workspace}/edit', 'edit')->name('workspaces.edit');
+    Route::put('workspaces/{workspace}', 'update')->name('workspaces.update');
+    Route::delete('workspaces/{workspace}', 'destroy')->name('workspaces.destroy');
 });
