@@ -24,22 +24,6 @@ class AccountRepository implements AccountRepositoryInterface
     {
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
-
-        // 2. Tạo workspace
-        $workspace = $user->ownedWorkspaces()->create([
-            'name' => $user->name . "My Workspace",
-        ]);
-
-        // 3. Tạo 3 board mặc định
-        $today = Carbon::today();
-        
-        $workspace->boards()->createMany([
-            ['name' => 'Đang làm'],
-            ['name' => 'Đã làm'],
-            ['name' => 'Sắp tới'],
-        ]);
-
-        // 4. Login
         Auth::login($user);
 
         return $user;

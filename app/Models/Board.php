@@ -8,6 +8,7 @@ class Board extends Model
 {
     protected $fillable = [
         'workspace_id',
+        'creator_id',
         'name'
     ];
     public function workspace()
@@ -15,8 +16,8 @@ class Board extends Model
         return $this->belongsTo(Workspace::class);
     }
 
-    public function lists()
+    public function tasks()
     {
-        return $this->hasMany(TaskList::class);
+        return $this->hasMany(Task::class);
     }
 }

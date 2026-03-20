@@ -12,20 +12,20 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
     {
         return Workspace::with('boards')
             ->where('owner_id', Auth::id())
-            ->latest()       
-            ->first();       
+            ->latest()
+            ->first();
     }
     public function getAll()
     {
         return Workspace::with('boards')
-            ->where('owner_id', Auth::id()) 
+            ->where('owner_id', Auth::id())
             ->get();
     }
 
     public function findById($id)
     {
         return Workspace::with('boards')
-             ->where('owner_id', Auth::id())
+            ->where('owner_id', Auth::id())
             ->findOrFail($id);
     }
 
@@ -33,7 +33,20 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
     {
         $data['owner_id'] = Auth::id();
 
-        return Workspace::create($data);
+        $workspace = Workspace::create($data);
+
+        $userId = Auth::id();
+
+        $defaultBoards = ['Đang làm', 'Sắp tới', 'Đã hoàn thành'];
+
+        foreach ($defaultBoards as $boardName) {
+            $workspace->boards()->create([
+                'name' => $boardName,
+                'creator_id' => $userId,
+            ]);
+        }
+
+        return $workspace;
     }
 
     public function update($id, array $data)

@@ -14,10 +14,6 @@ class Task extends Model
         'position',
         'due_date'
     ];
-    public function list()
-    {
-        return $this->belongsTo(TaskList::class);
-    }
 
     public function assignee()
     {

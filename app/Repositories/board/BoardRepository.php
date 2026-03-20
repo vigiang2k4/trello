@@ -1,56 +1,40 @@
 <?php
 
-namespace App\Repositories\Workspace;
+namespace App\Repositories\Board;
 
+use App\Models\Board;
 use App\Models\Workspace;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use InvalidArgumentException;
 
-class WorkspaceRepository implements WorkspaceRepositoryInterface
+class BoardRepository implements BoardRepositoryInterface
 {
-
-    public function index()
-    {
-        return Workspace::with('boards')
-            ->where('owner_id', Auth::id())
-            ->latest()       
-            ->first();       
-    }
-    public function getAll()
-    {
-        return Workspace::with('boards')
-            ->where('owner_id', Auth::id()) 
-            ->get();
-    }
-
-    public function findById($id)
-    {
-        return Workspace::with('boards')
-             ->where('owner_id', Auth::id())
-            ->findOrFail($id);
-    }
-
     public function create(array $data)
     {
-        $data['owner_id'] = Auth::id();
+        if (empty($data['name']) || empty($data['workspace_id'])) {
+            throw new InvalidArgumentException('workspace_id và name là bắt buộc.');
+        }
+        $boardData = Arr::only($data, ['name', 'workspace_id']);
+        $boardData['creator_id'] = Auth::id();
 
-        return Workspace::create($data);
+        return Board::create($boardData);
     }
 
     public function update($id, array $data)
     {
-        $workspace = Workspace::where('owner_id', Auth::id())
+        $board = Board::where('owner_id', Auth::id())
             ->findOrFail($id);
 
-        $workspace->update($data);
+        $board->update($data);
 
-        return $workspace;
+        return $board;
     }
 
     public function delete($id)
     {
-        $workspace = Workspace::where('owner_id', Auth::id())
-            ->findOrFail($id);
+        Board::findOrFail($id)->delete();
 
-        return $workspace->delete();
+        return Board::destroy($id);
     }
 }

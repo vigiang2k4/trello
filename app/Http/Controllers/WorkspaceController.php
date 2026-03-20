@@ -44,35 +44,26 @@ class WorkspaceController extends Controller
     public function update(Request $request, Workspace $workspace)
     {
         if ($workspace->owner_id !== Auth::id()) {
-            return response()->json([
-                'message' => 'Forbidden'
-            ], 403);
+            return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa workspace này');
         }
 
         $data = $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        $updated = $this->workspaceRepo->update($workspace->id, $data);
+        $this->workspaceRepo->update($workspace->id, $data);
 
-        return response()->json([
-            'message' => 'Workspace updated',
-            'data' => $updated
-        ]);
+        return redirect()->back()->with('success', 'Cập nhật workspace thành công');
     }
 
     public function destroy(Workspace $workspace)
     {
-        if ($workspace->owner_id !== Auth::id()) {
-            return response()->json([
-                'message' => 'Forbidden'
-            ], 403);
+        if ($workspace->owner_id === Auth::id()) {
+            $this->workspaceRepo->delete($workspace->id);
+
+            return redirect()->back()->with('success', 'Workspace deleted successfully');
         }
 
-        $this->workspaceRepo->delete($workspace->id);
-
-        return response()->json([
-            'message' => 'Workspace deleted'
-        ]);
+        return redirect()->back()->with('error', 'Bạn không có quyền xóa workspace này');
     }
 }
