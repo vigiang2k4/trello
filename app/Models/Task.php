@@ -7,21 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = [
-        'list_id',
+        'board_id',
         'title',
         'description',
-        'assigned_to',
-        'position',
         'due_date'
     ];
 
-    public function assignee()
+    public function board()
     {
-        return $this->belongsTo(User::class, 'assigned_to');
+        return $this->belongsTo(Board::class);
     }
 
-    public function comments()
+    public function workspace()
     {
-        return $this->hasMany(TaskComment::class);
+        return $this->board->workspace();
     }
 }

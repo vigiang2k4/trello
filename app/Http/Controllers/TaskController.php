@@ -3,16 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Repositories\Task\TaskRepository;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+
+    protected $taskRepo;
+
+    public function __construct(TaskRepository $taskRepo)
+    {
+        $this->taskRepo = $taskRepo;
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($workspaceId)
     {
-        //
+        $tasks = $this->taskRepo->getAllByWorkspace($workspaceId);
+
+        return view('workspace.show', compact('tasks', 'workspaceId'));
     }
 
     /**
@@ -28,7 +38,14 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->taskRepo->create([
+            'board_id' => $request->board_id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'due_date' => $request->due_date,
+        ]);
+
+        return redirect()->back()->with('success', 'Task created successfully');
     }
 
     /**
@@ -50,16 +67,24 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, $id)
     {
-        //
+        $this->taskRepo->update($id, [
+            'title' => $request->title,
+            'description' => $request->description,
+            'due_date' => $request->due_date,
+        ]);
+
+        return redirect()->back()->with('success', 'Task updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy($id)
     {
-        //
+        $this->taskRepo->delete($id);
+
+        return redirect()->back()->with('success', 'Task deleted successfully');
     }
 }

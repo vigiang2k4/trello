@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('list_id')
+            $table->foreignId('board_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
@@ -21,14 +21,8 @@ return new class extends Migration
 
             $table->text('description')->nullable();
 
-            $table->foreignId('assigned_to')
-                ->nullable()
-                ->constrained('users')
-                ->nullOnDelete();
-
             $table->date('due_date')->nullable();
 
-            $table->integer('position')->default(0);
             $table->timestamps();
         });
     }

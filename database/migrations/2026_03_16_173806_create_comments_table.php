@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('task_comments', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('task_id')
+            $table->foreignId('workspace_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
@@ -22,7 +21,8 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->text('content');
+            $table->text('comment');
+            
             $table->timestamps();
         });
     }

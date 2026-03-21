@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('role')->default('member');  //owner, member
 
             $table->timestamps();
-            $table->unique(['workspace_id', 'user_id']);
         });
     }
 

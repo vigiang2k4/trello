@@ -27,4 +27,8 @@ class Workspace extends Model
     {
         return $this->hasMany(Board::class);
     }
+    public function tasks()
+    {
+        return $this->hasManyThrough(Task::class, Board::class);
+    }
 }

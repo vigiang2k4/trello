@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,10 +20,10 @@ Route::controller(AccountController::class)->group(function () {
 
     Route::get('user/edit', 'edit')->name('edit');
     Route::post('user/update', 'update')->name('update');
-   
+
     Route::get('password/forgot', 'forgot')->name('forgot');
     Route::post('password/forgot', 'forgot_')->name('forgot_');
- 
+
     Route::get('password/reset/{token}', 'password')->name('password');
     Route::post('password/reset', 'password_')->name('password_');
 });
@@ -43,4 +44,12 @@ Route::controller(BoardController::class)->group(function () {
     Route::get('boards/{board}/edit', 'edit')->name('boards.edit');
     Route::put('boards/{board}', 'update')->name('boards.update');
     Route::delete('boards/{board}', 'destroy')->name('boards.destroy');
+});
+
+Route::controller(TaskController::class)->group(function () {
+    Route::post('tasks', 'store')->name('tasks.store');
+    Route::get('tasks/{task}', 'show')->name('tasks.show');
+    Route::get('tasks/{task}/edit', 'edit')->name('tasks.edit');
+    Route::put('tasks/{task}', 'update')->name('tasks.update');
+    Route::delete('tasks/{task}', 'destroy')->name('tasks.destroy');
 });

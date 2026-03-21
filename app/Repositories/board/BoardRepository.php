@@ -23,8 +23,7 @@ class BoardRepository implements BoardRepositoryInterface
 
     public function update($id, array $data)
     {
-        $board = Board::where('owner_id', Auth::id())
-            ->findOrFail($id);
+        $board = Board::findOrFail($id);
 
         $board->update($data);
 
